@@ -2,21 +2,28 @@
 #include <assert.h>
 
 int is_valid_solution(){
-  if(unique_values = set.max_value)
-    return 1;
-  return 0;
+  return unique_values == set.max_value;
 }
+
 void print_solution(){
   int i;
+  printf("%d\n",solution_size);
   for(i = 0;i < set.num_subsets; i++){
-    
+    if(solution[i]){
+      printf("(%d)",i);
+      int j;
+      for(j = 0;j < set.subsets[i].num_values;j++){
+	printf(" %d",set.subsets[i].values[j]);
+      }
+      printf("\n");
+    }
   }
-  
 }
+
 int process_solution(){
   if(solution_size < min_solution_size){
     min_solution_size = solution_size;
-    print_solution;  
+    print_solution();  
   }
 }
 
@@ -51,4 +58,9 @@ int remove_subset(int index){
   for(i = 0; i < set.subsets[index].num_values; i++)
     remove_value(values[i]);
     
+}
+
+void backtrack(){
+  if(is_valid_solution())
+    process_solution();
 }
