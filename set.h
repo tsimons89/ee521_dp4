@@ -1,3 +1,6 @@
+#ifndef SET_H
+#define SET_H
+
 typedef struct Subset{
   int num_values;
   int * values;
@@ -12,3 +15,4 @@ struct set{
 
 void read_set_from_file(char * filename);
 void print_set();
+#endif
