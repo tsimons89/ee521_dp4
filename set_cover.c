@@ -1,5 +1,6 @@
 #include "set_cover.h"
 #include <assert.h>
+#include <stdio.h>
 
 int is_valid_solution(){
   return unique_values == set.max_value;
@@ -58,6 +59,16 @@ int remove_subset(int index){
   for(i = 0; i < set.subsets[index].num_values; i++)
     remove_value(values[i]);
     
+}
+
+void construct_candidates(){
+  int i,j;
+  num_cadidates = 0;
+  for(i = set.max_value; i > 0; i-- ){
+    for(j = 0; j < set.num_subsets; j++){
+      
+    }
+  }
 }
 
 void backtrack(){
