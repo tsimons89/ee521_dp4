@@ -9,7 +9,7 @@ int solution_size = 0;
 int unique_values;
 int min_solution_size = 1025;
 int disable_output = 0;
-
+int value_to_cover;
 int is_solution_valid(){
   return unique_values == set.max_value;
 }
@@ -76,13 +76,16 @@ int remove_subset(int index){
 int calc_subset_score(int idx){
   Subset subset = set.subsets[idx];
   int i,score = 0;
+  int value_to_cover_found = 0;
   if(solution[idx])
     return 0;
   for(i = 0; i < subset.num_values; i++){
+    if(value_to_cover == subset.values[i])
+      value_to_cover_found = 1;
     if(values_hist[subset.values[i]] == 0)
       score++;
   }
-  return score;
+  return score * value_to_cover_found;
 }
 
 int set_subset_scores(){
@@ -108,6 +111,13 @@ int * init_candidates(){
   int * candidates = (int *) malloc(set.num_subsets * sizeof(int));
   for(i = 0; i < set.num_subsets; i++)
     candidates[i] = i;
+  for(i = 1; i <= set.max_value; i++){
+    if(values_hist[i] == 0){
+      value_to_cover = i;
+      return candidates;
+    }
+  }
+  assert(1 == 0); //should not reach here
   return candidates;
 }
 
@@ -125,11 +135,9 @@ void backtrack(){
     int num_candidates,i;
     int * candidates = construct_candidates(&num_candidates);
     for(i = 0; i < num_candidates; i++){
-      if(subset_scores[candidates[i]] > 0){
-	add_subset(candidates[i]);
-	backtrack();
-	remove_subset(candidates[i]);
-      }
+      add_subset(candidates[i]);
+      backtrack();
+      remove_subset(candidates[i]);
     }
     free(candidates);
   }
