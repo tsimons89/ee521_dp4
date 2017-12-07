@@ -80,9 +80,12 @@ int calc_subset_score(int idx){
   if(solution[idx])
     return 0;
   for(i = 0; i < subset.num_values; i++){
-    if(value_to_cover == subset.values[i])
+    int value = subset.values[i];
+    //    if(value > value_to_cover)
+    //      continue;
+    if(value_to_cover == value)
       value_to_cover_found = 1;
-    if(values_hist[subset.values[i]] == 0)
+    if(values_hist[value] == 0)
       score++;
   }
   return score * value_to_cover_found;
@@ -129,17 +132,18 @@ int * construct_candidates(int * num_candidates){
 }
 
 void backtrack(){
-  if(is_solution_valid())
+  if(is_solution_valid()){
     process_solution();
-  else{
-    int num_candidates,i;
-    int * candidates = construct_candidates(&num_candidates);
-    for(i = 0; i < num_candidates; i++){
-      add_subset(candidates[i]);
-      backtrack();
-      remove_subset(candidates[i]);
-    }
-    free(candidates);
+    return;
   }
-    
+  if(solution_size >= min_solution_size - 1)
+    return;
+  int num_candidates,i;
+  int * candidates = construct_candidates(&num_candidates);
+  for(i = 0; i < num_candidates; i++){
+    add_subset(candidates[i]);
+    backtrack();
+    remove_subset(candidates[i]);
+  }
+  free(candidates);
 }
